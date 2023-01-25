@@ -27,7 +27,7 @@ What you need to do **BEFORE starting the deployment:**
 
 ![tags](https://github.com/f5devcentral/aip-demo-udf/blob/main/user_tags.jpg?raw=true)
 
-3. Navigate to **Details** page and edit **Custom Userdata** script. You need to insert **YOUR Deployment Key** and **YOUR REST API Key**. **Example of Customer Userdata script:**
+3. Navigate to **Details** page and edit **Custom Userdata** script. You need to insert **YOUR Deployment Key** and **YOUR REST API Key**. **Example of Custom Userdata script:**
 
 ![tags](https://github.com/f5devcentral/aip-demo-udf/blob/main/custom_user_data.jpg?raw=true)
 
