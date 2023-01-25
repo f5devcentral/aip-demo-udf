@@ -17,13 +17,17 @@ What you need to do **BEFORE starting the deployment:**
     - **User ID**
 
 4. Navigate to *Settings* -> *Integrations* -> *Click on "ADD AWS INTEGRATION"
-5. Copy **Account ID** value 
+5. Copy **Account ID** value
 
 ## Populate User Tags and User-data script
 
 
 1. In this UDF blueprint locate **CONFIGURE ME** Ubuntu server and click **DETAILS**
 2. **Documentation** page contains User Tags where you need to define 3 tags: ORG, USER and ACCOUNT. See Description on the top of the page for instructions
+Example of User Tags:
+
+![tags](https://github.com/f5devcentral/aip-demo-udf/blob/main/user_tags.jpg?raw=true)
+
 3. Navigate to **Details** page and edit **Custom Userdata** script. You need to insert **YOUR Deployment Key** and **YOUR REST API Key**
 
 ## Start the deployment
