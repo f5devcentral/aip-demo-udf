@@ -1,0 +1,17 @@
+#cloud-config
+# PROVIDE AIP Deployment Key which is found in AIP Console -> Settings -> Keys -> Deployment Key
+# PROVIDE AIP API Key which is found in AIP Console -> Settings -> Keys -> REST API Key
+# Deployment Key and API Key are unique to AIP ORG which is mapped to a NS in XC
+bootcmd:
+  - sed -i '/^TS_DEPLOY_KEY=/d' /etc/environment || true
+  - sed -i '/^API_KEY=/d' /etc/environment || true
+#--------------------------------------------------------
+# INSERT YOUR DEPLOYMENT KEY
+  - echo "TS_DEPLOY_KEY=PASTE-DEPLOYMENT-KEY-HERE" >> /etc/environment
+#--------------------------------------------------------
+# INSERT YOUR API KEY
+  - echo "API_KEY=PASTE-API-KEY-HERE" >> /etc/environment
+#--------------------------------------------------------
+  - echo "[default]" > /home/ubuntu/.aws/credentials
+  - echo "aws_access_key_id=`curl metadata.udf/cloudAccounts/0/apiKey`" >> /home/ubuntu/.aws/credentials
+  - echo "aws_secret_access_key=`curl metadata.udf/cloudAccounts/0/apiSecret`" >> /home/ubuntu/.aws/credentials
