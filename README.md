@@ -17,7 +17,7 @@ What you need to do **BEFORE starting the deployment:**
     - **User ID**
 
 4. Navigate to *Settings* -> *Integrations* -> *Click on "ADD AWS INTEGRATION"
-5. Copy **Account ID** value (*Note: for F5 internal tenants Account ID is always 896126563706*)
+5. Copy **Account ID** value 
 
 ## Populate User Tags and User-data script
 
