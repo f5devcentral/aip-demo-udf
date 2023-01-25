@@ -1,6 +1,6 @@
 XC AIP Demo with CloudTrail integration
 ==============================
-This blueprint allows you to automatically deploy AIP agents into an existing kubernetes cluster (k3s) running across 2 nodes in UDF. Additionally this blueprint leverages AWS cloud account to configure and integrate AWS CloudTrail with AIP automatically.
+This blueprint allows you to automatically deploy AIP agents into an existing Kubernetes cluster (k3s) running across 2 nodes in UDF. Additionally this blueprint leverages AWS cloud account to configure and integrate AWS CloudTrail with AIP automatically.
 
 What you need to do **BEFORE starting the deployment:**
 -------------------------------------------------------
@@ -23,12 +23,13 @@ What you need to do **BEFORE starting the deployment:**
 
 
 1. In this UDF blueprint locate **CONFIGURE ME** Ubuntu server and click **DETAILS**
-2. **Documentation** page contains User Tags where you need to define 3 tags: ORG, USER and ACCOUNT. See Description on the top of the page for instructions
-Example of User Tags:
+2. **Documentation** page contains User Tags where you need to define 3 tags: ORG, USER and ACCOUNT. See Description on the top of the page for instructions. **Example of User Tags:**
 
 ![tags](https://github.com/f5devcentral/aip-demo-udf/blob/main/user_tags.jpg?raw=true)
 
-3. Navigate to **Details** page and edit **Custom Userdata** script. You need to insert **YOUR Deployment Key** and **YOUR REST API Key**
+3. Navigate to **Details** page and edit **Custom Userdata** script. You need to insert **YOUR Deployment Key** and **YOUR REST API Key**. **Example of Customer Userdata script:**
+
+![tags](https://github.com/f5devcentral/aip-demo-udf/blob/main/custom_user_data.jpg?raw=true)
 
 ## Start the deployment
 
