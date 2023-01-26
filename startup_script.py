@@ -41,6 +41,7 @@ with open("/etc/environment") as f:
 
 TS_DEPLOY_KEY = env["TS_DEPLOY_KEY"]
 API_KEY = env["API_KEY"].strip('\n')
+# Add additionalSetupConfig: ""
 
 logging.info('AIP Deployment key: ' + TS_DEPLOY_KEY)
 values = requests.get('https://raw.githubusercontent.com/threatstack/threatstack-helm/master/values.yaml')
