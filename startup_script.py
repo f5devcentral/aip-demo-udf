@@ -32,15 +32,16 @@ logging.basicConfig(
 
 logging.info('-----------Initializing startup script-----------')
 time.sleep(60)
-logging.info('Reading /etc/environment')
-env = {}
-with open("/etc/environment") as f:
-    for line in f:
-        name, value = line.split("=")
-        env[name] = value
 
-TS_DEPLOY_KEY = env["TS_DEPLOY_KEY"]
-API_KEY = env["API_KEY"].strip('\n')
+logging.info('Getting UDF User Tags')
+r =requests.get('http://metadata.udf/userTags')
+r.raise_for_status()
+tags = r.json()
+ACCOUNT_ID = jq.compile(".userTags.name.ACCOUNT.value | keys[]").input(tags).first()
+USER_ID = jq.compile(".userTags.name.USER.value | keys[]").input(tags).first()
+ORGANIZATION_ID = jq.compile(".userTags.name.ORG.value | keys[]").input(tags).first()
+TS_DEPLOY_KEY = jq.compile(".userTags.name.DEPLOYMENT_KEY.value | keys[]").input(tags).first()
+API_KEY = jq.compile(".userTags.name.API_KEY.value | keys[]").input(tags).first()
 # Add additionalSetupConfig: ""
 
 logging.info('AIP Deployment key: ' + TS_DEPLOY_KEY)
@@ -62,13 +63,6 @@ subprocess.run("/snap/bin/helm delete threatstack-agents >> /home/ubuntu/log/sta
 time.sleep(15)
 subprocess.run("/snap/bin/helm install threatstack-agents --values /home/ubuntu/ts/values.yaml threatstack/threatstack-agent >> /home/ubuntu/log/startup.log", shell=True)
 
-logging.info('Getting UDF User Tags')
-r =requests.get('http://metadata.udf/userTags')
-r.raise_for_status()
-tags = r.json()
-ACCOUNT_ID = jq.compile(".userTags.name.ACCOUNT.value | keys[]").input(tags).first()
-USER_ID = jq.compile(".userTags.name.USER.value | keys[]").input(tags).first()
-ORGANIZATION_ID = jq.compile(".userTags.name.ORG.value | keys[]").input(tags).first()
 UUID = uuid.uuid4().hex
 logging.info('Deploying Threatstack CFT. Stack Name: ' +'ts0-'+UUID)
 
