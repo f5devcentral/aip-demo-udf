@@ -1,5 +1,5 @@
-AWS CLOUDTRAIL INTEGRATION
-==========================
+AIP AGENTS DEPLOYMENT AND AWS CLOUDTRAIL INTEGRATION
+====================================================
 
 For AWS CloudTrail integration to work **you MUST specify 5 User Tags below BEFORE STARTING THIS DEPLOYMENT**:
 
