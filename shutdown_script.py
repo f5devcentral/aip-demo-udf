@@ -53,17 +53,18 @@ credentials = {
     'algorithm': 'sha256'
 }
 URL = BASE_PATH + URI_PATH + '/' + id
+payload = ""
 logging.info('Removing AWS Integration ID: ' + id)
 sender = Sender(credentials, URL, "DELETE", always_hash_content=False, ext=ORGANIZATION_ID)
-response = requests.delete(URL, headers={'Authorization': sender.request_header})
+response = requests.delete(URL, data=payload, headers={'Authorization': sender.request_header})
 
 if response.status_code != 204:
-        logging.info('Something went wrong...Aborting startup script. Response:' + str(response.status_code))
+        logging.info('Something went wrong...Aborting shutdown script. Response:' + str(response.status_code))
         exit(1)
 else:
         logging.info('Successfully removed AWS integration')
 
 
 logging.info('------------Shutdown script complete--------------')
-os.remove('var/tmp/int_id')
+os.remove('/var/tmp/int_id')
 exit(0)
