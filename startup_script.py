@@ -55,6 +55,14 @@ with open('/home/ubuntu/ts/values.yaml', 'r+') as f:
     f.write(data)
     f.truncate()
     f.close()
+with open('/home/ubuntu/ts/values.yaml', 'r') as f:
+  filedata = f.read()
+  filedata = filedata.replace('  # enableDocker: false', '  enableDocker: true')
+  filedata = filedata.replace('  # enableContainerd: false', '  enableContainerd: true')
+  f.close()
+with open('/home/ubuntu/ts/values.yaml', 'w') as f:
+  f.write(filedata)
+  f.close()
 with open('/home/ubuntu/ts/values.yaml', 'a') as v:
     v.write("agentDeployKey: " + TS_DEPLOY_KEY)
     v.close()
@@ -129,6 +137,9 @@ sender1 = Sender(credentials, URL, "POST", always_hash_content=True, ext=ORGANIZ
 response1 = requests.post(URL, headers={'Authorization': sender1.request_header, 'content-type': 'application/json'}, data=json.dumps(payload1))
 
 ID = response1.json().get("id")
+with open('var/tmp/int_id', 'w') as f:
+    f.write(ID)
+    f.close()
 EXT_ID = response1.json().get("externalId")
 if response1.status_code != 201:
         logging.info('Something went wrong...Aborting startup script. Response:' + response1.status_code)
@@ -170,6 +181,39 @@ if response2.status_code != 204:
         exit(1)
 else:
         logging.info('Successfully populated all params')
+
+#
+# Add rule enable API calls HERE
+#
+"""
+RULES_URI = BASE_PATH + '/v2/rulesets'
+sender = Sender(credentials, RULES_URI, "GET", always_hash_content=True, ext=ORGANIZATION_ID )
+response = requests.put(RULES_URI, headers={'Authorization': sender.request_header})
+if response.status_code != 200:
+        logging.info('Something went wrong...Aborting startup script. Status code:' + response2.status_code)
+        exit(1)
+else:
+         for i in response['rulesets']:
+            if i['name'] == 'Base Rule Set':
+                base_ruleset = i['id']
+                base_rules = i['rules']
+                for r in base_rules:
+                    RULE_URI = BASE_PATH + '/v2/rulesets' + '/' + base_ruleset + '/rules/' + r
+
+
+            if i['name'] == 'Docker Rule Set':
+                docker_ruleset = i['id']
+                docker_rules = i['rules']
+            if i['name'] == 'Kubernetes Rule Set':
+                k8s_ruleset = i['id']
+                k8s_rules = i['rules']
+
+
+base, docker and k8s rulesets
+    
+"""
+
+
 logging.info('------------Startup script complete--------------')
 os.remove('/home/ubuntu/ts/values.yaml')
 exit(0)
