@@ -39,7 +39,7 @@ USER_ID = jq.compile(".userTags.name.USER.value | keys[]").input(tags).first()
 ORGANIZATION_ID = jq.compile(".userTags.name.ORG.value | keys[]").input(tags).first()
 API_KEY = jq.compile(".userTags.name.API_KEY.value | keys[]").input(tags).first()
 
-with open('var/tmp/int_id', 'r') as f:
+with open('/var/tmp/int_id', 'r') as f:
   id = f.read()
   f.close()
 

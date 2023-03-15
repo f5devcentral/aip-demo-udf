@@ -137,7 +137,7 @@ sender1 = Sender(credentials, URL, "POST", always_hash_content=True, ext=ORGANIZ
 response1 = requests.post(URL, headers={'Authorization': sender1.request_header, 'content-type': 'application/json'}, data=json.dumps(payload1))
 
 ID = response1.json().get("id")
-with open('var/tmp/int_id', 'w') as f:
+with open('/var/tmp/int_id', 'w') as f:
     f.write(ID)
     f.close()
 EXT_ID = response1.json().get("externalId")
