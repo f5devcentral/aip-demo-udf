@@ -142,7 +142,7 @@ with open('/var/tmp/int_id', 'w') as f:
     f.close()
 EXT_ID = response1.json().get("externalId")
 if response1.status_code != 201:
-        logging.info('Something went wrong...Aborting startup script. Response:' + response1.status_code)
+        logging.info('Something went wrong...Aborting startup script. Response:' + response1.status_code.str())
         exit(1)
 else:
         logging.info('Successfully created integration ID:' + ID)
@@ -177,7 +177,7 @@ payload2 = {'source': SQS, 'region': REGION, 's3Bucket': S3}
 sender2 = Sender(credentials, URL_CLOUDTRAIL, "PUT", always_hash_content=True, ext=ORGANIZATION_ID, content=json.dumps(payload2), content_type="application/json" )
 response2 = requests.put(URL_CLOUDTRAIL, headers={'Authorization': sender2.request_header, 'content-type': 'application/json'}, data=json.dumps(payload2))
 if response2.status_code != 204:
-        logging.info('Something went wrong...Aborting startup script. Status code:' + response2.status_code)
+        logging.info('Something went wrong...Aborting startup script. Status code:' + response2.status_code.str())
         exit(1)
 else:
         logging.info('Successfully populated all params')
@@ -190,7 +190,7 @@ RULES_URI = BASE_PATH + '/v2/rulesets'
 sender = Sender(credentials, RULES_URI, "GET", always_hash_content=True, ext=ORGANIZATION_ID )
 response = requests.put(RULES_URI, headers={'Authorization': sender.request_header})
 if response.status_code != 200:
-        logging.info('Something went wrong...Aborting startup script. Status code:' + response2.status_code)
+        logging.info('Something went wrong...Aborting startup script. Status code:' + response2.status_code.str())
         exit(1)
 else:
          for i in response['rulesets']:

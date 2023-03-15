@@ -58,7 +58,7 @@ sender = Sender(credentials, URL, "DELETE", always_hash_content=False, ext=ORGAN
 response = requests.post(URL, headers={'Authorization': sender.request_header})
 
 if response.status_code != 204:
-        logging.info('Something went wrong...Aborting startup script. Response:' + response.status_code)
+        logging.info('Something went wrong...Aborting startup script. Response:' + response.status_code.str())
         exit(1)
 else:
         logging.info('Successfully removed AWS integration')
