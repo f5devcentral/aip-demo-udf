@@ -55,7 +55,7 @@ credentials = {
 URL = BASE_PATH + URI_PATH + '/' + id
 payload = ""
 logging.info('Removing AWS Integration ID: ' + id)
-sender = Sender(credentials, URL, "DELETE", always_hash_content=False, ext=ORGANIZATION_ID)
+sender = Sender(credentials, URL, "DELETE", content=payload, always_hash_content=False, ext=ORGANIZATION_ID)
 response = requests.delete(URL, data=payload, headers={'Authorization': sender.request_header})
 
 if response.status_code != 204:
