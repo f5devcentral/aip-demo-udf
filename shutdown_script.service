@@ -1,0 +1,13 @@
+[Unit]
+Description=AIP AWS CloudTrail integration cleanup
+DefaultDependencies=no
+Before=shutdown.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+Group= ubuntu
+ExecStart=/home/ubuntu/aip-demo-udf/dist/shutdown_script
+
+[Install]
+WantedBy=halt.target reboot.target shutdown.target
