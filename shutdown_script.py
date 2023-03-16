@@ -39,10 +39,14 @@ USER_ID = jq.compile(".userTags.name.USER.value | keys[]").input(tags).first()
 ORGANIZATION_ID = jq.compile(".userTags.name.ORG.value | keys[]").input(tags).first()
 API_KEY = jq.compile(".userTags.name.API_KEY.value | keys[]").input(tags).first()
 
-with open('/var/tmp/int_id', 'r') as f:
-  id = f.read()
-  f.close()
-
+try:
+    with open('/var/tmp/int_id', 'r') as f:
+        id = f.read()
+        f.close()
+except OSError:
+    logging.info("Integration ID file doesn't exist. Exiting")
+    exit(1)
+    
 HOST = "api.threatstack.com"
 BASE_PATH = 'https://' + HOST
 URI_PATH = '/v2/integrations/aws'
