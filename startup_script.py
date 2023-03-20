@@ -229,7 +229,7 @@ if ENABLE:
     if RULESET != None:
         rulesets = RULESET
     else:
-        rulesets = ['Base Rule Set','Docker Rule Set','Kubernetes Rule Set']
+        rulesets = ['Base Rule Set','Docker Rule Set','Kubernetes Rule Set', 'CloudTrail Rule Set']
     RULES_URI = BASE_PATH + '/v2/rulesets'
     response = getApi(RULES_URI)
     resp_json = response.json()

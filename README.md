@@ -52,7 +52,9 @@ This behavior is in line with the attacker locating redis DB and exfiltrating DB
 
 ## Enabling Rules
 
-In order for the system to generate *Alerts* it is necessary to enable corresponding **Rule Sets**. Navigate to *Rules* and enable the following Rule Sets:
+Unless **ENABLE_RULES** User Tag was specified for the deployment, it is necessary to manually enable Rules in order for the system to start generating **Alerts**
+
+To manually enable the Rules, navigate to *Rules* and enable the following Rule Sets:
 
   1. Base Rule Set
   2. Docker Rule Set
