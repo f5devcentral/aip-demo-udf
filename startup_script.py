@@ -68,7 +68,7 @@ def getTags(tagName):
             exit(1)
         else:
             if tagName == 'RULESET':
-                logging.info('No rulesets defined. Will enable rules in base, docker and k8s rulesets if "ENABLE_RULES" flag is set')
+                logging.info('No rulesets defined. Will enable rules in base, docker, cloudTrail and k8s rulesets if "ENABLE_RULES" flag is set')
                 return None
             else:
                 logging.info('Not enabling any rules')
@@ -230,6 +230,7 @@ if ENABLE:
         rulesets = RULESET
     else:
         rulesets = ['Base Rule Set','Docker Rule Set','Kubernetes Rule Set', 'CloudTrail Rule Set']
+    logging.info('Enabling Rulesets: ' + str(rulesets))
     RULES_URI = BASE_PATH + '/v2/rulesets'
     response = getApi(RULES_URI)
     resp_json = response.json()
@@ -249,16 +250,15 @@ if ENABLE:
                             for key, value in json_data.items():
                                     if json_data["enabled"] == False:
                                             json_data["enabled"] = True
-                    #    logging.info('JSON data: ' + str(json.dumps(json_data)))
                         if response.status_code != 200:
                             logging.info('Error retrieving the rule ' + r +'. Status code:' + str(response.status_code))
                         else:
                             payload = json_data
                             response = putApi(RULE_URI,payload)
                             if response.status_code != 200:
-                                logging.info('Error enabling the rule ' + r +'. Status code:' + str(response.status_code))
+                                logging.info('Error enabling rule ' + r +'. Status code:' + str(response.status_code))
                             else:
-                                logging.info('Successfully enabled the rule ' + r )
+                                logging.info('Successfully enabled rule ' + r )
 
 
 logging.info('------------Startup script complete--------------')
