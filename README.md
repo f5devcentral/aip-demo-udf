@@ -23,7 +23,7 @@ What you need to do **BEFORE starting the deployment:**
 
 
 1. In this UDF blueprint locate **CONFIGURE ME** Ubuntu server and click **DETAILS**
-2. **Documentation** page contains User Tags where you need to define 5 tags: DEPLOYMENT_KEY, API_KEY, ORG, USER and ACCOUNT. See Description on the top of the page for instructions. **Example of User Tags:**
+2. **Documentation** page contains User Tags where you need to define 5 tags: DEPLOYMENT_KEY, API_KEY, ORG, USER and ACCOUNT. Optionally, add **ENABLE_RULES** tag if you want the system to auto-enable rules in the Rulesets. See Description on the top of the page for instructions. **Example of User Tags:**
 
 ![tags](https://github.com/f5devcentral/aip-demo-udf/blob/main/user_tags.jpg?raw=true)
 
