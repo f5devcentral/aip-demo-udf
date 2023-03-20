@@ -68,7 +68,7 @@ def getTags(tagName):
             exit(1)
         else:
             if tagName == 'RULESET':
-                logging.info('No rulesets defined. Will enable rules in base, docker, cloudTrail and k8s rulesets if "ENABLE_RULES" flag is set')
+                logging.info('Will enable all rules in base, docker, cloudTrail and k8s rulesets if "ENABLE_RULES" flag is set')
                 return None
             else:
                 logging.info('Not enabling any rules')
