@@ -64,15 +64,12 @@ def getTags(tagName):
                 return key
     except AttributeError:
         if tagName != 'RULESET' and tagName != 'ENABLE_RULES':
-            logging.info('Tag %s is not defined. Exiting', tagName)
+            logging.info('Mandatory User Tag %s is not defined. Exiting', tagName)
             exit(1)
         else:
-            if tagName == 'RULESET':
-                logging.info('Will enable all rules in base, docker, cloudTrail and k8s rulesets if "ENABLE_RULES" flag is set')
-                return None
-            else:
-                logging.info('Not enabling any rules')
-                return False
+            logging.info('Will enable all rules in base, docker, cloudTrail and k8s rulesets if "ENABLE_RULES" flag is set')
+            return False
+
                 
 
 ACCOUNT_ID = getTags('ACCOUNT')
@@ -226,7 +223,7 @@ else:
 #
 
 if ENABLE:
-    if RULESET != None:
+    if RULESET:
         rulesets = RULESET
     else:
         rulesets = ['Base Rule Set','Docker Rule Set','Kubernetes Rule Set', 'CloudTrail Rule Set']
