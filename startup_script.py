@@ -67,7 +67,7 @@ def getTags(tagName):
             logging.info('Mandatory User Tag %s is not defined. Exiting', tagName)
             exit(1)
         else:
-            logging.info('Will enable all rules in base, docker, cloudTrail and k8s rulesets if "ENABLE_RULES" flag is set')
+            logging.info('Optional %s User Tag is not defined', tagName)
             return False
 
                 
