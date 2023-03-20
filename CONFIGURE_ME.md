@@ -15,6 +15,8 @@ Optionally you can specify **ENABLE_RULES** tag and the system will automaticall
  - Kubernetes Rule Set
  - CloudTrail Rule Set
 
+*Note: Due to AIP API throttling (max 16 requests per min) it will take the script full 15 mins to enable all 238 rules across the Rulesets.*
+
 Values of Deployment Key (DEPLOYMENT_KEY), REST API Key (API_KEY), Organization ID (ORG) and UserID (USER) can be found in AIP Console : Settings -> Keys
 Value of AccountID (ACCOUNT) can be found in AIP Console : Settings -> Integrations -> *Click on **ADD AWS INTEGRATION** and copy the value of **AccountID** *
 **Example** of tags :
