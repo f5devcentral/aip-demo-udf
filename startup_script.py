@@ -249,7 +249,7 @@ if ENABLE:
                         for item in json_data:
                             for key, value in json_data.items():
                                     if json_data["enabled"] == False:
-                                            json_data["enabled"] = True
+                                            json_data["enabled"] == True
                         if response.status_code != 200:
                             logging.info('Error retrieving the rule ' + r +'. Status code:' + str(response.status_code))
                         else:
