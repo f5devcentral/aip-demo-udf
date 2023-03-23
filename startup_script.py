@@ -12,16 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from mohawk import Sender
-import requests
-import os
-import sys
-import logging
-import time
-import subprocess
-import uuid
-import json
-import boto3
-import jq
+import requests, os, sys, logging, time, subprocess, uuid, json, boto3, jq
 
 logging.basicConfig(
     filename='/home/ubuntu/log/startup.log',
@@ -70,7 +61,7 @@ def getTags(tagName):
             logging.info('Optional %s User Tag is not defined', tagName)
             return False
 
-                
+
 
 ACCOUNT_ID = getTags('ACCOUNT')
 USER_ID = getTags('USER')
