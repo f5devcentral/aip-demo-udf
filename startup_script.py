@@ -42,10 +42,13 @@ def postApi(uri,payload):
     response = requests.post(URI, headers={'Authorization': sender.request_header, 'content-type': 'application/json'}, data=json.dumps(payload))
     return response
 
-logging.info('Getting UDF Deployment Tags')
-r =requests.get('http://metadata.udf/deploymentTags')
-r.raise_for_status()
-tags = r.json()
+
+def getTagsUrl(url):
+    r =requests.get(url)
+    r.raise_for_status()
+    tagsUrl = r.json()
+    return tagsUrl
+
 def getTags(tagName):
     value = tags.get(tagName)
     if value != None:
@@ -60,14 +63,56 @@ def getTags(tagName):
         else:
             logging.info('Optional %s User Tag is not defined', tagName)
             return False
-        
+
+# Accommodating old UserTags
+def getUserTags(tagName):
+    try:
+        for key, value in tags.get('userTags').get('name').get(tagName).get('value').items():
+            if tagName == 'ENABLE_RULES' and value != None:
+                return True
+            else:
+                return key
+    except AttributeError:
+        if tagName != 'RULESET' and tagName != 'ENABLE_RULES':
+            logging.info('Mandatory User Tag %s is not defined. Exiting', tagName)
+            exit(1)
+        else:
+            logging.info('Optional %s User Tag is not defined', tagName)
+            return False
+
+# See which tags are defined by the user (compatibility with older BP versions)
+oldUrl = 'http://metadata.udf/userTags'
+newUrl = 'http://metadata.udf/deploymentTags'
+
+logging.info('Getting UDF Deployment/User Tags')
+tags = getTagsUrl(newUrl)
 ACCOUNT_ID = getTags('ACCOUNT')
-USER_ID = getTags('USER')
-ORGANIZATION_ID = getTags('ORG')
-TS_DEPLOY_KEY = getTags('DEPLOYMENT_KEY')
-API_KEY = getTags('API_KEY')
-ENABLE = getTags('ENABLE_RULES')
-RULESET = getTags('RULESET')
+if ACCOUNT_ID != None:
+    logging.info('Found ACCOUNT_ID tag in Deployment tags. Using new URL')
+    url = newUrl
+    proc = getTags.__name__
+else:
+    tags = getTagsUrl(oldUrl)
+    try:
+        for key, value in tags.get('userTags').get('name').get('ACCOUNT').get('value').items():
+            if value != None:
+                url = oldUrl
+                proc = getUserTags.__name__
+            else:
+                logging.info('User Tags seem to be missing a value. Exiting')
+                exit(1)
+    except AttributeError:
+        logging.info('Could not find User Tags. Exiting')
+        exit(1)
+
+tags = getTagsUrl(url)
+ACCOUNT_ID = proc('ACCOUNT')
+USER_ID = proc('USER')
+ORGANIZATION_ID = proc('ORG')
+TS_DEPLOY_KEY = proc('DEPLOYMENT_KEY')
+API_KEY = proc('API_KEY')
+ENABLE = proc('ENABLE_RULES')
+RULESET = proc('RULESET')
 
 
 logging.info('AIP Deployment key: ' + TS_DEPLOY_KEY)
