@@ -12,16 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from mohawk import Sender
-import requests
-import os
-import sys
-import logging
-import time
-import subprocess
-import uuid
-import json
-import boto3
-import jq
+import requests, os, sys, logging, time, subprocess, uuid, json, boto3, jq
 
 logging.basicConfig(
     filename='/home/ubuntu/log/startup.log',
@@ -51,11 +42,30 @@ def postApi(uri,payload):
     response = requests.post(URI, headers={'Authorization': sender.request_header, 'content-type': 'application/json'}, data=json.dumps(payload))
     return response
 
-logging.info('Getting UDF User Tags')
-r =requests.get('http://metadata.udf/userTags')
-r.raise_for_status()
-tags = r.json()
-def getTags(tagName):
+
+def getTagsUrl(url):
+    r =requests.get(url)
+    r.raise_for_status()
+    tagsUrl = r.json()
+    return tagsUrl
+
+def getTags(tagName, tags):
+    value = tags.get(tagName)
+    if value != None:
+        if tagName == 'ENABLE_RULES':
+            return True
+        else:
+            return value
+    else:
+        if tagName != 'RULESET' and tagName != 'ENABLE_RULES':
+            logging.info('Mandatory Deployment Tag %s is not defined. Exiting', tagName)
+            exit(1)
+        else:
+            logging.info('Optional %s Deployment Tag is not defined', tagName)
+            return False
+
+# Accommodating old UserTags
+def getUserTags(tagName, tags):
     try:
         for key, value in tags.get('userTags').get('name').get(tagName).get('value').items():
             if tagName == 'ENABLE_RULES' and value != None:
@@ -70,15 +80,39 @@ def getTags(tagName):
             logging.info('Optional %s User Tag is not defined', tagName)
             return False
 
-                
+# See which tags are defined by the user (compatibility with older BP versions)
+oldUrl = 'http://metadata.udf/userTags'
+newUrl = 'http://metadata.udf/deploymentTags'
 
-ACCOUNT_ID = getTags('ACCOUNT')
-USER_ID = getTags('USER')
-ORGANIZATION_ID = getTags('ORG')
-TS_DEPLOY_KEY = getTags('DEPLOYMENT_KEY')
-API_KEY = getTags('API_KEY')
-ENABLE = getTags('ENABLE_RULES')
-RULESET = getTags('RULESET')
+logging.info('Getting UDF Deployment/User Tags')
+tags = getTagsUrl(newUrl)
+ACCOUNT_ID = tags.get('ACCOUNT')
+if ACCOUNT_ID != None:
+    logging.info('Found ACCOUNT_ID tag in Deployment tags. Using new URL')
+    url = newUrl
+    proc = getTags
+else:
+    tags = getTagsUrl(oldUrl)
+    try:
+        for key, value in tags.get('userTags').get('name').get('ACCOUNT').get('value').items():
+            if value != None:
+                url = oldUrl
+                proc = getUserTags
+            else:
+                logging.info('User Tags seem to be missing a value. Exiting')
+                exit(1)
+    except AttributeError:
+        logging.info('Could not find User Tags. Exiting')
+        exit(1)
+
+tags = getTagsUrl(url)
+ACCOUNT_ID = proc('ACCOUNT', tags)
+USER_ID = proc('USER', tags)
+ORGANIZATION_ID = proc('ORG', tags)
+TS_DEPLOY_KEY = proc('DEPLOYMENT_KEY', tags)
+API_KEY = proc('API_KEY', tags)
+ENABLE = proc('ENABLE_RULES', tags)
+RULESET = proc('RULESET', tags)
 
 
 logging.info('AIP Deployment key: ' + TS_DEPLOY_KEY)
