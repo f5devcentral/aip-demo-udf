@@ -42,27 +42,25 @@ def postApi(uri,payload):
     response = requests.post(URI, headers={'Authorization': sender.request_header, 'content-type': 'application/json'}, data=json.dumps(payload))
     return response
 
-logging.info('Getting UDF User Tags')
-r =requests.get('http://metadata.udf/userTags')
+logging.info('Getting UDF Deployment Tags')
+r =requests.get('http://metadata.udf/deploymentTags')
 r.raise_for_status()
 tags = r.json()
 def getTags(tagName):
-    try:
-        for key, value in tags.get('userTags').get('name').get(tagName).get('value').items():
-            if tagName == 'ENABLE_RULES' and value != None:
-                return True
-            else:
-                return key
-    except AttributeError:
+    value = tags.get(tagName)
+    if value != None:
+        if tagName == 'ENABLE_RULES':
+            return True
+        else:
+            return value
+    else:
         if tagName != 'RULESET' and tagName != 'ENABLE_RULES':
             logging.info('Mandatory User Tag %s is not defined. Exiting', tagName)
             exit(1)
         else:
             logging.info('Optional %s User Tag is not defined', tagName)
             return False
-
-
-
+        
 ACCOUNT_ID = getTags('ACCOUNT')
 USER_ID = getTags('USER')
 ORGANIZATION_ID = getTags('ORG')

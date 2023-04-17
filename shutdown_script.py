@@ -12,16 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from mohawk import Sender
-import requests
-import os
-import sys
-import logging
-import time
-import subprocess
-import uuid
-import json
-import boto3
-import jq
+import requests, os, logging, jq
+
 
 logging.basicConfig(
     filename='/home/ubuntu/log/shutdown.log',
