@@ -49,7 +49,7 @@ def getTagsUrl(url):
     tagsUrl = r.json()
     return tagsUrl
 
-def getTags(tagName):
+def getTags(tagName, tags):
     value = tags.get(tagName)
     if value != None:
         if tagName == 'ENABLE_RULES':
@@ -58,14 +58,14 @@ def getTags(tagName):
             return value
     else:
         if tagName != 'RULESET' and tagName != 'ENABLE_RULES':
-            logging.info('Mandatory User Tag %s is not defined. Exiting', tagName)
+            logging.info('Mandatory Deployment Tag %s is not defined. Exiting', tagName)
             exit(1)
         else:
-            logging.info('Optional %s User Tag is not defined', tagName)
+            logging.info('Optional %s Deployment Tag is not defined', tagName)
             return False
 
 # Accommodating old UserTags
-def getUserTags(tagName):
+def getUserTags(tagName, tags):
     try:
         for key, value in tags.get('userTags').get('name').get(tagName).get('value').items():
             if tagName == 'ENABLE_RULES' and value != None:
@@ -86,7 +86,7 @@ newUrl = 'http://metadata.udf/deploymentTags'
 
 logging.info('Getting UDF Deployment/User Tags')
 tags = getTagsUrl(newUrl)
-ACCOUNT_ID = getTags('ACCOUNT')
+ACCOUNT_ID = tags.get('ACCOUNT')
 if ACCOUNT_ID != None:
     logging.info('Found ACCOUNT_ID tag in Deployment tags. Using new URL')
     url = newUrl
@@ -106,13 +106,13 @@ else:
         exit(1)
 
 tags = getTagsUrl(url)
-ACCOUNT_ID = proc('ACCOUNT')
-USER_ID = proc('USER')
-ORGANIZATION_ID = proc('ORG')
-TS_DEPLOY_KEY = proc('DEPLOYMENT_KEY')
-API_KEY = proc('API_KEY')
-ENABLE = proc('ENABLE_RULES')
-RULESET = proc('RULESET')
+ACCOUNT_ID = proc('ACCOUNT', tags)
+USER_ID = proc('USER', tags)
+ORGANIZATION_ID = proc('ORG', tags)
+TS_DEPLOY_KEY = proc('DEPLOYMENT_KEY', tags)
+API_KEY = proc('API_KEY', tags)
+ENABLE = proc('ENABLE_RULES', tags)
+RULESET = proc('RULESET', tags)
 
 
 logging.info('AIP Deployment key: ' + TS_DEPLOY_KEY)
