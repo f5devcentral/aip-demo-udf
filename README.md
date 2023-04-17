@@ -19,11 +19,20 @@ What you need to do **BEFORE starting the deployment:**
 4. Navigate to *Settings* -> *Integrations* -> *Click on "ADD AWS INTEGRATION"
 5. Copy **Account ID** value
 
-## Populate User Tags and User-data script
+## **NEW** Populate Deployment Tags
+Recent UDF release introduced deployment-wide tags that this BP uses in place of component-specific User Tags. We recommend using Deployment Tags as it guarantees long-term support from UDF.
+
+1. In this UDF blueprint locate Tags tab
+2. You need to populate 5 tags: DEPLOYMENT_KEY, API_KEY, ORG, USER and ACCOUNT. Optionally, populate **ENABLE_RULES** tag if you want the system to auto-enable rules in the following Rulesets: 
+      - Base Rule Set
+      - Docker Rule Set
+      - Kubernetes Rule Set
+      - CloudTrail Rule Set
+
+*Note: Due to AIP API throttling (max 16 requests per min) it will take the script full **15 mins** to enable all 238 rules across the Rulesets.*
 
 
-1. In this UDF blueprint locate **CONFIGURE ME** Ubuntu server and click **DETAILS**
-2. **Documentation** page contains User Tags where you need to define 5 tags: DEPLOYMENT_KEY, API_KEY, ORG, USER and ACCOUNT. Optionally, add **ENABLE_RULES** tag if you want the system to auto-enable rules in the Rulesets. See Description on the top of the page for instructions. **Example of User Tags:**
+**Example of User Tags:**
 
 ![tags](https://github.com/f5devcentral/aip-demo-udf/blob/main/user_tags.jpg?raw=true)
 
