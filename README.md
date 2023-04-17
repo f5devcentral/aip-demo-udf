@@ -32,7 +32,7 @@ Recent UDF release introduced deployment-wide tags that this BP uses in place of
 *Note: Due to AIP API throttling (max 16 requests per min) it will take the script full **15 mins** to enable all 238 rules across the Rulesets.*
 
 
-**Example of User Tags:**
+**Example of Deployment Tags:**
 
 ![tags](https://github.com/f5devcentral/aip-demo-udf/blob/main/user_tags.jpg?raw=true)
 
