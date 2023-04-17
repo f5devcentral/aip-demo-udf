@@ -90,14 +90,14 @@ ACCOUNT_ID = getTags('ACCOUNT')
 if ACCOUNT_ID != None:
     logging.info('Found ACCOUNT_ID tag in Deployment tags. Using new URL')
     url = newUrl
-    proc = getTags.__name__
+    proc = getTags
 else:
     tags = getTagsUrl(oldUrl)
     try:
         for key, value in tags.get('userTags').get('name').get('ACCOUNT').get('value').items():
             if value != None:
                 url = oldUrl
-                proc = getUserTags.__name__
+                proc = getUserTags
             else:
                 logging.info('User Tags seem to be missing a value. Exiting')
                 exit(1)
